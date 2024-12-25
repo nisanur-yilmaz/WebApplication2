@@ -1,0 +1,267 @@
+@page
+@model WebApplication2.Pages.SıgnUp
+@{
+ViewData["Title"] = "Sıgn Up  page";
+}
+@section css
+{
+<style>
+    
+
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    .nav-link.text-dark {
+        top: 10px;
+        margin: 10px;
+        color: #121212;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .nav-link.text-dark:hover {
+        color: #007bff;
+        transform: scale(1.05); /* baglantıyı buyutur */
+
+    }
+
+    body {
+        background-color: #DCD6F7;
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+    }
+
+    .form-Name-Password-PasswordAgain-genderId {
+        align-items: flex-start;
+
+    }
+
+    .gender {
+        margin-top: 10px;
+        align-items: flex-start;
+        flex-direction: row;
+    }
+
+    .input1 {
+        width: 700px;
+        height: 30px;
+        border: 1px solid #e6e6e6;
+        border-radius: 15px;
+    }
+
+    h1 {
+
+        color: #424874;
+        font-size: 60px;
+        margin: auto;
+        padding: 10px;
+    }
+
+    li {
+        margin-right: 1000px;
+    }
+
+    small {
+        color: red;
+    }
+
+    .buttonSubmit {
+        padding: 12px;
+        background: #424874;
+        color: white;
+        border-radius: 15px;
+        border: #424874;
+
+    }
+
+    .buttonSubmit:hover {
+        color: white;
+        background: red;
+        border: #424874;;
+    }
+
+    label {
+        margin-bottom: 5px;
+    }
+
+    /* Masaüstü (1200px and up) */
+
+    @@media screen and (min-width: 1200px) {
+
+        body {
+            font-size: 16px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+        }
+
+        .input1 {
+            height: 45px;
+            margin-bottom: 10px;
+        }
+        
+    }
+
+    /* Mobil max  */
+    
+
+    @@media screen and (max-width: 767px) {
+        .input1 {
+            width: 100% !important;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .form-Name-Password-PasswordAgain-genderId {
+            width: 100%;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center !important;
+        }
+
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .buttonSubmit {
+            width: 200px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 36px !important;
+            text-align: center;
+            padding: 20px !important;
+        }
+
+        label {
+            align-self: flex-start;
+            margin-left: 10%;
+            margin-bottom: 8px;
+        }
+
+        small {
+            align-self: flex-start;
+            margin-left: 10%;
+            margin-top: 5px;
+        }
+
+        .gender {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .gender label {
+            margin-left: 0;
+            margin-right: 10px;
+        }
+
+        .gender input[type="radio"] {
+            margin: 0 5px;
+            width: auto;
+            height: auto;
+        }
+
+        li {
+            margin-right: 0 !important;
+            text-align: center;
+        }
+
+        .small {
+            text-align: center;
+            margin: 10px auto;
+        }
+    }
+
+    /*Mobil min*/
+    
+
+    @@media screen and (max-width: 480px) {
+        .input1 {
+            max-width: 280px;
+        }
+
+        h1 {
+            font-size: 28px !important;
+        }
+
+        .buttonSubmit {
+            width: 160px;
+        }
+
+        .gender {
+            padding: 0 10%;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .gender small {
+            width: 100%;
+            text-align: left;
+            margin-left: 0;
+        }
+    }
+</style>
+}
+<div>
+    <h1>Sign Up</h1>
+</div>
+<form method="post">
+    <div class="form-Name-Password-PasswordAgain-genderId">
+        <label asp-for="Name"></label>
+        <input class="input1" asp-for="Name" placeholder="Enter Name" autocomplete="off"/>
+        <small>@TempData["Name.Error"]</small>
+        <small>@TempData["UserName.Error"]</small>
+        <small class="smallN">@TempData["Welcome"]</small>
+
+
+    </div>
+    <div class="form-Name-Password-PasswordAgain-genderId">
+        <label asp-for="Password"></label>
+        <input class="input1" asp-for="Password" placeholder="Enter Password" autocomplete="off" type="Password"/>
+        <small>@TempData["Password.Error"]</small>
+
+
+    </div>
+    <div class="form-Name-Password-PasswordAgain-genderId">
+        <label asp-for="PasswordAgain"></label>
+        <input class="input1" asp-for="PasswordAgain" placeholder="Enter Password Again" autocomplete="off"
+               type="password"/>
+        <small>@TempData["PasswordAgain.Error"]</small>
+        <small>@TempData["Stop"]</small>
+
+    </div>
+    <div class="gender">
+        <label asp-for="Gender"></label>
+        <input asp-for="Gender" autocomplete="off" type="radio" value="1">
+        Male
+        <input asp-for="Gender" autocomplete="off" type="radio" value="2">
+        Female
+        <small class="form-Name-Password-PasswordAgain-genderId">@TempData["Gender.Error"]</small>
+    </div>
+
+
+    <button type="submit" class="buttonSubmit">
+        Submit
+    </button>
+    <small class="small">@TempData["Stop"]</small>
+
+
+</form>

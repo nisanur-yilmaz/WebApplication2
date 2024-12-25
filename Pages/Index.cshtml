@@ -1,0 +1,205 @@
+﻿@page
+@model IndexModel
+@{
+ViewData["Title"] = "Home page";
+}
+@section css
+{
+    <style>
+    
+
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+
+    h1 {
+        margin: auto;
+        padding: 40px;
+        font-size: 60px;
+        color: #424874;;
+
+    }
+    .nav-link.text-dark {
+        top: 10px;
+        margin: 10px;
+        color: #121212;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .nav-link.text-dark:hover {
+        color: #007bff;
+        transform: scale(1.05); /* baglantıyı buyutur */
+
+    }
+
+    body {
+        background-color: #DCD6F7;
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    small {
+        color: red;
+    }
+
+
+    .form-Name-Password {
+        align-items: flex-start;
+    }
+
+    .buttonSubmit {
+        color: white;
+        padding: 12px;
+        border:  #424874;
+        border-radius: 15px;
+        background:  #424874;
+    }
+
+    .buttonSubmit:hover {
+        color: white;
+        border:  #424874;
+        background: #258cfb;;
+    }
+
+    input {
+        width: 700px;
+        height: 30px;
+        border: 1px solid #e6e6e6;
+        border-radius: 15px;
+    }
+
+    li {
+        margin-right: 1000px;
+    }
+
+    label {
+        padding-bottom: 5px;
+    }
+    /* Masaüstü (1200px and up) */
+    @@media screen and (min-width: 1200px) {
+    body {
+        font-size: 16px;
+    }
+
+    h1 {
+        font-size: 3.5rem;
+    }
+
+    input {
+        height: 45px;
+        margin-bottom: 20px;
+    }
+
+    .buttonSubmit {
+        padding: 12px;
+    }
+        }
+    
+    /* Mobil max  */
+
+    @@media screen and (max-width: 767px) {
+        input {
+            width:280px !important;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .form-Name-Password {
+            width: 100%;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center !important;
+        }
+
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .buttonSubmit {
+            margin: 20px auto;
+            width: 200px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 36px !important;
+            text-align: center;
+            padding: 20px !important;
+        }
+
+        label {
+            align-self: flex-start;
+            margin-left: 10%;
+            margin-bottom: 5px;
+        }
+
+        small {
+            align-self: flex-start;
+            margin-left: 10%;
+            margin-top: 5px;
+        }
+
+        li {
+            margin-right: 0 !important;
+            text-align: center;
+        }
+
+        .div {
+            width: 100%;
+        }
+
+        body {
+            padding: 10px;
+        }
+        }
+    /*Mobil min*/
+
+    @@media screen and (max-width: 480px) {
+        input {
+            max-width: 280px;
+        }
+
+        h1 {
+            font-size: 28px !important;
+        }
+
+        .buttonSubmit {
+            width: 160px;
+        }
+        }
+</style>
+}
+
+<div class="div">
+    <h1> Log in </h1>
+</div>
+<form method="post" asp-page="Index">
+    <div class="form-Name-Password">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" placeholder="Enter Name" autocomplete="off"/>
+        <small>@TempData["Name.Error"]</small>
+    </div>
+    <div class="form-Name-Password">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" placeholder="Enter Password" autocomplete="off" type="password"/>
+        <small>@TempData["Password.Error"]</small>
+    </div>
+    <button type="submit" class="buttonSubmit">
+        Submit
+    </button>
+    <small class="small">@TempData["Stop"]</small>
+
+</form>

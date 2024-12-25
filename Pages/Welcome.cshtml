@@ -1,0 +1,217 @@
+
+@page
+@model WebApplication2.Pages.Welcome
+
+
+@section css
+{
+    <style>
+
+    
+
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        font-size: 0.85rem;
+        font-weight: 600;
+        background-color: #DCD6F7;
+    }
+
+    .nav-link.text-dark {
+        top: 10px;
+        margin: 10px;
+        color: #121212;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .nav-link.text-dark:hover {
+        color: #007bff;
+        transform: scale(1.05); /* baglantıyı buyutur */
+
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .h1B {
+        font-size: 60px;
+        color: #424874;
+        margin: auto;
+        padding: 10px;
+    }
+
+    .SaveButton {
+        color: white;
+        width: 70px;
+        padding: 12px;
+        border:  #424874;
+        border-radius: 15px;
+        background:  #424874;
+    }
+
+    .SaveButton:hover {
+        background: limegreen;
+        color: white;
+    }
+
+    .input1 {
+        width: 700px;
+        height: 30px;
+        border: 1px solid #e6e6e6;
+        border-radius: 15px;
+    }
+
+    label {
+        margin-bottom: 5px;
+    }
+
+    .smallFalse {
+        color: red;
+    }
+
+    .smallTrue {
+        color: limegreen;
+    }
+
+    li {
+        position: absolute;
+        left: 45px;
+        top: 30px;
+    }
+
+    .Form-password-passwordAgain {
+        align-items: flex-start;
+    }
+    /* Masaüstü (1200px and up) */
+    @@media screen and (min-width: 1200px) {
+    body {
+        font-size: 16px;
+    }
+
+    .h1B {
+        font-size: 3.50rem;
+    }
+
+    .input1 {
+        height: 40px;
+        margin-bottom: 20px;
+    }
+    
+        }
+    /* Mobil max  */
+
+    @@media screen and (max-width: 767px) {
+        .input1 {
+            width:280px !important;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .Form-password-passwordAgain {
+            width: 100%;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center !important;
+        }
+
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .SaveButton {
+            margin: 10px auto;
+            width: 200px;
+            display: block;
+        }
+
+        .h1B {
+            font-size: 32px !important;
+            text-align: center;
+            padding: 20px !important;
+            margin: 10px auto !important;
+        }
+
+        label {
+            align-self: flex-start;
+            margin-left: 10%;
+            margin-bottom: 8px;
+        }
+
+        .smallFalse, .smallTrue {
+            align-self: flex-start;
+            margin-left: 10%;
+            margin-top: 5px;
+        }
+
+        li {
+            position: static !important;
+            margin: 10px auto !important;
+            left: auto !important;
+            top: auto !important;
+        }
+        }
+    /*  Mobil min */
+    @@media screen and (max-width: 480px) {
+        .input1 {
+            width:280px !important;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+
+        .h1B {
+            font-size: 28px !important;
+        }
+
+        .SaveButton {
+            width: 200px;
+            font-size: 14px;
+        }
+
+        .Form-password-passwordAgain {
+            padding: 0 15px;
+        }
+
+        form {
+            padding: 5px;
+        }
+        }
+
+</style>
+}
+
+<div>
+    <h1 class="h1B">Change Password</h1>
+</div>
+<form method="post" asp-page="Welcome">
+    <div class="Form-password-passwordAgain">
+        <label asp-for="Password"></label>
+        <input class="input1" asp-for="Password" placeholder="Enter New Password" autocomplete="off" type="password"/>
+        <small class="smallFalse">@TempData["Password.Error"]</small>
+    </div>
+
+    <div class="Form-password-passwordAgain">
+        <label asp-for="PasswordAgain"></label>
+        <input class="input1" asp-for="PasswordAgain" placeholder="Enter New Password Again" autocomplete="off" type="password"/>
+        <small class="smallFalse">@TempData["PasswordAgain.Error"]</small>
+        <small class="smallFalse">@TempData["Stop"]</small>
+    </div>
+    <button type="submit" class="SaveButton">
+        Save
+    </button>
+    <small class="smallTrue">@TempData["PasswordTrue"]</small>
+
+</form>

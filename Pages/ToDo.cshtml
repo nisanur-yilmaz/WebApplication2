@@ -1,0 +1,557 @@
+@page
+@model WebApplication2.Pages.ToDo
+
+@{
+ViewData["Title"] = "ToDo Page";
+}
+
+@section css
+{
+<style>
+    
+
+    @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    /* Sürükle bırak stilleri */
+    .draggable-item form {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .draggable-item .input-Update {
+        flex: 1;
+        margin: 0;
+    }
+    .draggable-item {
+        cursor: move;
+        transition: all 0.2s ease;
+        background-color: #F8F7FF;
+        padding: 8px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        border: 2px solid transparent;
+    }
+
+    .draggable-item:hover {
+        transform: translateX(5px);
+        border-color: #424874;
+    }
+
+    .dragging {
+        opacity: 0.5;
+        transform: scale(1.05);
+        background-color: #DCD6F7;
+    }
+    .todo-container.drag-over {
+         background-color: #F8F7FF;
+         border: 2px dashed #424874;
+     }
+
+
+    * {
+       
+        padding: 0;
+        box-sizing: border-box;
+        text-decoration: none;
+        color: #424874;;
+    }
+
+    body {
+        background-color: #A6B1E1;
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* Konteyner düzeni */
+    .oL {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
+    .todo-container {
+        background-color: #DCD6F7;
+        border-radius: 12px;
+        box-shadow: 0 22px 40px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+
+
+    .h2-div {
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin: 15px 20px;
+    }
+
+    .small {
+        display: flex;
+        justify-content: center;
+        font-size: 1.25rem;
+        color: white;
+    }
+
+    /* üst kısımlar sıgnUp ındex */
+
+    .nav-link.text-dark {
+        top: 10px;
+        margin: 10px;
+        color: #121212;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link.text-dark:hover {
+        color: #007bff;
+        transform: scale(1.05); /* baglantıyı buyutur */
+    }
+
+    /* Form öğesi */
+    .inpuT, .input-Update {
+        height: 40px;
+        border-radius: 10px;
+        border: 2px solid #A6B1E1;
+        width: calc(100% - 30px);
+        margin: 10px auto;
+        padding: 0 10px;
+        display: block;
+    }
+
+    .submitB {
+        border-radius: 10px;
+        background: #424874;
+        color: whitesmoke;
+        border: none;
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .submitB:hover {
+        background: #A6B1E1;
+    }
+
+    /* Liste Şekıllendırme */
+    .listDiv {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0 20px;
+    }
+
+    ul li {
+        margin-bottom: 10px;
+    }
+   
+    /* Logout Button */
+    #a-logout {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #424874;
+        border-radius: 10px;
+        padding: 10px;
+        z-index: 999;
+        transition: background-color 0.3s ease;
+    }
+
+    #a-logout:hover {
+        background-color: #258cfb;
+    }
+
+    /* Password Change Button */
+    #password-button-changhe {
+        background-color: #424874;
+        border: none;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px 0 0 0;
+        transition: background-color 0.3s ease;
+    }
+    
+    #password-button-changhe:hover {
+        background-color: limegreen;
+    }
+    
+    /* Mobil Cihazlar (up to 576px) */
+    
+    @@media (max-width: 576px) {
+        .oL {
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .todo-container {
+            width: 95%;
+            max-width: 100%;
+        }
+
+        .h2-div {
+            font-size: 1.25rem;
+            text-align: center;
+        }
+
+        .small {
+            font-size: 1rem;
+        }
+
+        .inpuT, .input-Update {
+            width: calc(100% - 20px);
+        }
+    }
+
+    
+
+    /* Masaüstü (769px and above) */
+    
+    @@media (min-width: 769px) and (max-width: 1000px) {
+        .oL {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .todo-container {
+            width: calc(90% - 10px);
+            max-width: 700px;
+        }
+
+    }
+    
+    @@media (min-width: 1001px) {
+        .oL {
+            justify-content: center;
+        }
+
+        .todo-container {
+            width: 350px;
+        }
+
+
+        /* SVG */
+        svg {
+            vertical-align: middle;
+        }
+    }
+
+</style>
+}
+@section scripts {
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const containers = document.querySelectorAll('.todo-container');
+        const draggableItems = document.querySelectorAll('.draggable-item');
+
+        containers.forEach(container => {
+            container.addEventListener('dragenter', e => {
+                e.preventDefault();
+                container.classList.add('drag-over');
+            });
+
+            container.addEventListener('dragleave', e => {
+                e.preventDefault();
+                container.classList.remove('drag-over');
+            });
+
+            container.addEventListener('dragover', e => {
+                e.preventDefault();
+                const draggable = document.querySelector('.dragging');
+                if (draggable) {
+                    const afterElement = getDragAfterElement(container, e.clientY);
+                    const list = container.querySelector('ul');
+                    if (afterElement) {
+                        list.insertBefore(draggable, afterElement);
+                    } else {
+                        list.appendChild(draggable);
+                    }
+                }
+            });
+
+            container.addEventListener('drop', e => {
+                e.preventDefault();
+                container.classList.remove('drag-over');
+            });
+        });
+
+        draggableItems.forEach(item => {
+            item.addEventListener('dragstart', e => {
+                item.classList.add('dragging');
+                if (e.dataTransfer) {
+                    e.dataTransfer.effectAllowed = 'move';
+                }
+            });
+
+            item.addEventListener('dragend', async e => {
+                item.classList.remove('dragging');
+                const newContainer = item.closest('.todo-container');
+
+                if (newContainer) {
+                    const newStatus = newContainer.dataset.status;
+                    const itemId = item.id.split('-')[1];
+                    const statusInput = item.querySelector('input[name="status"]');
+
+                    try {
+                        const result = await updateItemStatus(itemId, newStatus);
+                        if (result.success) {
+                            statusInput.value = newStatus; // Update hidden status input
+                            item.style.backgroundColor = '#90EE90';
+                            setTimeout(() => {
+                                item.style.backgroundColor = '';
+                            }, 500);
+                        } else {
+                            throw new Error('Update failed');
+                        }
+                    } catch (error) {
+                        console.error('Status update failed:', error);
+                        item.style.backgroundColor = '#FFB6C1';
+                        setTimeout(() => {
+                            item.style.backgroundColor = '';
+                        }, 500);
+                        // Revert the item to its original container
+                        const originalStatus = statusInput.value;
+                        const originalContainer = document.querySelector(`.todo-container[data-status="${originalStatus}"]`);
+                        if (originalContainer) {
+                            originalContainer.querySelector('ul').appendChild(item);
+                        }
+                    }
+                }
+            });
+
+            // Touch device support
+            item.addEventListener('touchstart', e => {
+                item.classList.add('dragging');
+            });
+
+            item.addEventListener('touchend', e => {
+                item.classList.remove('dragging');
+            });
+        });
+    });
+
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.draggable-item:not(.dragging)')];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    async function updateItemStatus(itemId, newStatus) {
+        const formData = new FormData();
+        formData.append('id', itemId);
+        formData.append('status', newStatus);
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        const response = await fetch('/Todo?handler=UpdateTodoStatus', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'RequestVerificationToken': token
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Status update failed');
+        }
+
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message || 'Update failed');
+        }
+
+        return data;
+    }
+
+    function showNotification(message, type = 'success') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+</script>
+
+}
+
+
+@* Password change *@
+<form method="post" class="form-Password">
+    <button id="password-button-changhe" type="submit" asp-page="Welcome">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+            <path
+                d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480h80q0 66 25 124.5t68.5 102q43.5 43.5 102 69T480-159q134 0 227-93t93-227q0-134-93-227t-227-93q-89 0-161.5 43.5T204-640h116v80H80v-240h80v80q55-73 138-116.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-80-240q-17 0-28.5-11.5T360-360v-120q0-17 11.5-28.5T400-520v-40q0-33 23.5-56.5T480-640q33 0 56.5 23.5T560-560v40q17 0 28.5 11.5T600-480v120q0 17-11.5 28.5T560-320H400Zm40-200h80v-40q0-17-11.5-28.5T480-600q-17 0-28.5 11.5T440-560v40Z"/>
+        </svg>
+    </button>
+</form>
+<small class="small">Hoşgeldiniz @Model.Name @Model.Gender!</small>
+<div class="oL" method="post" asp-page="ToDo">
+    <div class="todo-container" data-status="0">
+        <h2 class="h2-div">
+            Yapılacaklar
+        </h2>
+        <form method="post">
+            <input type="hidden" name="id" value="0"/>
+            <input type="hidden" name="status" value="0"/>
+            <input class="inpuT" type="text" name="title" placeholder="Yeni görev..." required/>
+        </form>
+        <div class="listDiv">
+            <ul>
+                @foreach (var item in Model.Yapılacaklar)
+                {
+                <li id="item-@item.id" class="draggable-item" draggable="true">
+                    <form method="post">
+                        <input type="hidden" name="id" value="@item.id"/>
+                        <input class="input-Update" type="text" name="title" value="@item.title" required/>
+                        <input type="hidden" name="status" value="@item.status"/>
+                        @* update*@
+                        <button class="submitB" type="submit" name="Action" value="Update">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                 fill="#e8eaed">
+                                <path
+                                    d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+                            </svg>
+                        </button>
+
+                        @* delete*@
+                        <button class="submitB" name="Delete" value="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                 fill="#e8eaed">
+                                <path
+                                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                            </svg>
+
+                        </button>
+                     
+
+                    </form>
+
+
+                </li>
+                }
+            </ul>
+
+        </div>
+        
+    </div>
+
+    <div class="todo-container" data-status="1">
+        <h2 class="h2-div">
+            Yapılıyor
+        </h2>
+        <form method="post">
+            <input type="hidden" name="id" value="0"/>
+            <input type="hidden" name="status" value="1"/>
+            <input class="inpuT" type="text" name="title" placeholder="Yeni görev..." required/>
+            
+        </form>
+        <div class="listDiv">
+            <ul>
+                @foreach (var item in Model.Yapılıyor)
+                {
+                <li id="item-@item.id" class="draggable-item" draggable="true">
+                    <form method="post">
+                        <input type="hidden" name="id" value="@item.id"/>
+                        <input class="input-Update" type="text" name="title" value="@item.title" required/>
+                        <input type="hidden" name="status" value="@item.status"/>
+
+                        @* update*@
+                        <button class="submitB" type="submit" name="Action" value="Update">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                 fill="#e8eaed">
+                                <path
+                                    d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+                            </svg>
+                        </button>
+
+                        @* delete*@
+                        <button class="submitB" name="Delete" value="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                 fill="#e8eaed">
+                                <path
+                                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                            </svg>
+
+                        </button>
+
+                    </form>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="todo-container" data-status="2">
+        <h2 class="h2-div">
+            Bitti
+        </h2>
+        <form method="post">
+            <input type="hidden" name="id" value="0"/>
+            <input type="hidden" name="status" value="2"/>
+            <input class="inpuT" type="text" name="title" placeholder="Yeni görev..." required/>
+
+        </form>
+        <div class="listDiv">
+            <ul>
+                @foreach (var item in Model.Bitti)
+                {
+                <li id="item-@item.id" class="draggable-item" draggable="true">
+                    <form method="post">
+                        <input type="hidden" name="id" value="@item.id"/>
+                        <input class="input-Update" type="text" id="title" name="title" value="@item.title" required/>
+                        <input type="hidden" name="status" value="@item.status"/>
+
+                        @* update*@
+                        <button class="submitB" type="submit" name="Action" value="Update">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                 fill="#e8eaed">
+                                <path
+                                    d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/>
+                            </svg>
+                        </button>
+
+                        @* delete*@
+                        <button class="submitB" name="Delete" value="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                 fill="#e8eaed">
+                                <path
+                                    d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                            </svg>
+
+                        </button>
+
+                    </form>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+   
+</div>
+<a asp-page-handler="Logout" id="a-logout">
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
+        <path
+            d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/>
+    </svg>
+</a>
